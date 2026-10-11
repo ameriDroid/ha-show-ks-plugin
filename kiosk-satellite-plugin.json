@@ -1,0 +1,133 @@
+{
+  "schemaVersion": 1,
+  "id": "ha-show-manager",
+  "name": "HA Show Manager Service",
+  "version": "0.5.1",
+  "apiVersion": 1,
+  "minAndroidSdk": 24,
+  "entryClass": "com.ameridroid.hashow.ks.ManagerPlugin",
+  "description": "Connects Kiosk Satellite to the ameriDroid HA Show manager service: LED strip as an RGB light with effects and voice patterns, microphone mute, mic array and system versions with update checks, the modular I2C sensors (detected automatically, published as Home Assistant sensors), and a shortcut to open the manager app.",
+  "author": "ameriDroid",
+  "license": "Apache-2.0",
+  "capabilities": [
+    "entities",
+    "host.read"
+  ],
+  "settings": [
+    {
+      "key": "micSwitchFollow",
+      "type": "boolean",
+      "title": "Follow the hardware mic switch",
+      "default": true,
+      "group": "Microphone",
+      "description": "The slide switch on the HAT sets the microphone mute on the mic array itself. Turn off to control the mute only from here, Home Assistant or the manager app."
+    },
+    {
+      "key": "micSwitchInvert",
+      "type": "boolean",
+      "title": "Invert the hardware switch",
+      "default": false,
+      "group": "Microphone",
+      "description": "Swap which switch position means muted."
+    },
+    {
+      "key": "muteIndicator",
+      "type": "boolean",
+      "title": "Red strip while muted",
+      "default": true,
+      "group": "Microphone",
+      "description": "Turn the LED strip red whenever the microphone is muted."
+    },
+    {
+      "key": "muteSound",
+      "type": "boolean",
+      "title": "Mute sound",
+      "default": true,
+      "group": "Microphone",
+      "description": "Play a short whoosh when the microphone is muted (down) or unmuted (up)."
+    },
+    {
+      "key": "muteSoundVolume",
+      "type": "number",
+      "title": "Mute sound volume",
+      "default": 70,
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "group": "Microphone",
+      "description": "How loud the mute whoosh is."
+    },
+    {
+      "key": "statusPatterns",
+      "type": "boolean",
+      "title": "Voice patterns",
+      "default": true,
+      "group": "LED strip",
+      "description": "Show listening, thinking and speaking patterns on the LED strip when the voice assistant is active."
+    },
+    {
+      "key": "ledCount",
+      "type": "number",
+      "title": "LEDs on the strip",
+      "default": 8,
+      "min": 1,
+      "max": 64,
+      "step": 1,
+      "group": "LED strip",
+      "description": "How many WS2812 LEDs are connected. The HA Show HAT has 8."
+    },
+    {
+      "key": "updateChannel",
+      "type": "select",
+      "title": "Update channel",
+      "default": "Stable",
+      "options": [
+        "Stable",
+        "Beta"
+      ],
+      "group": "Updates",
+      "description": "Which release channel of the version feed to follow."
+    },
+    {
+      "key": "autoCheck",
+      "type": "boolean",
+      "title": "Check for updates automatically",
+      "default": true,
+      "group": "Updates",
+      "description": "Look for new mic array and system versions every few hours. Use the Check for updates action to look right now."
+    }
+  ],
+  "commands": [
+    {
+      "id": "openManager",
+      "title": "Open HA Show Manager"
+    },
+    {
+      "id": "checkUpdates",
+      "title": "Check for updates"
+    }
+  ],
+  "groups": [
+    {
+      "title": "Microphone",
+      "readingsTitle": "Microphone",
+      "readings": [
+        "switch.mic_mute"
+      ]
+    },
+    {
+      "title": "LED strip"
+    },
+    {
+      "title": "Updates",
+      "readingsTitle": "Versions and updates",
+      "readings": [
+        "text_sensor.hashow_version",
+        "text_sensor.xmos_version",
+        "text_sensor.updates",
+        "binary_sensor.update_available"
+      ]
+    }
+  ]
+}
