@@ -22,11 +22,11 @@ jobs:
           distribution: zulu
           java-version: 17
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-
-      - name: Install build-tools
-        run: sdkmanager "platforms;android-34" "build-tools;34.0.0"
+      - name: Install SDK components (the runner already has the Android SDK)
+        run: |
+          SDKM=$(ls -d "$ANDROID_HOME"/cmdline-tools/*/bin/sdkmanager | sort -V | tail -1)
+          yes | "$SDKM" --licenses > /dev/null || true
+          "$SDKM" "platforms;android-34" "build-tools;34.0.0"
 
       - name: Build the plugin
         run: python3 tools/build.py .
